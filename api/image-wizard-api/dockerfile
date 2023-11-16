@@ -1,0 +1,32 @@
+##
+## STEP 1 - COMMON BUILD STAGE
+##
+
+FROM golang:1.21 as common-build-stage
+
+WORKDIR /usr/src/app
+# pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
+COPY go.mod go.sum ./
+
+RUN go mod download
+RUN go mod verify
+
+COPY . .
+
+##
+## STEP 2 - PRODUCTION BUILD STAGE
+##
+FROM common-build-stage as production-build-stage
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o ./server -a -ldflags '-linkmode external -extldflags "-static"' ./main.go
+
+##
+## STEP 3 - PRODUCTION CONTAINER PACKAGE
+##
+FROM alpine as production-container-stage
+
+WORKDIR /
+
+COPY --from=production-build-stage /usr/src/app/server /server
+
+ENTRYPOINT ["/server"]

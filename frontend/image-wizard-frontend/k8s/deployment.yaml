@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-wizard-frontend-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: image-wizard-frontend
+  template:
+    metadata:
+      labels:
+        app: image-wizard-frontend
+    spec:
+      containers:
+        - name: image-wizard-frontend
+          image: test-next
+          ports:
+            - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: image-wizard-frontend-srvc
+spec:
+  selector:
+    app: image-wizard-frontend
+  ports:
+    - port: 3000
+      targetPort: 3000

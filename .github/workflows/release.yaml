@@ -12,9 +12,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./api/image-wizrd-api/dockerfile
+          - dockerfile: ./api/image-wizard-api/dockerfile
             image: jordanfox/image-wizard-api
-          - dockerfile: ./api/image-wizrd-frontend/dockerfile
+          - dockerfile: ./api/image-wizard-frontend/dockerfile
             image: jordanfox/image-wizard-frontend
     permissions:
       contents: read

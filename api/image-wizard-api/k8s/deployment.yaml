@@ -24,9 +24,9 @@ kind: Service
 metadata:
   name: image-wizard-api-srvc
 spec:
-  type: NodePort
+  type: ClusterIP
+  ports:
+    - port: 5000
+      targetPort: 5000
   selector:
     app: image-wizard-api
-  ports:
-   - port: 5000
-     nodePort: 30000

@@ -32,13 +32,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Build and push image-wizard-api
         uses: docker/build-push-action@v5
         with:
           context: ./api/image-wizard-api
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-      - name: Build and push other-image
+
+      - name: Build and push image-wizard-frontend
         uses: docker/build-push-action@v5
         with:
           context: ./frontend/image-wizard-frontend

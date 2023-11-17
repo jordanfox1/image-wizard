@@ -17,8 +17,10 @@ COPY . .
 ## STEP 2 - PRODUCTION BUILD STAGE
 ##
 FROM common-build-stage as production-build-stage
+# TODO: figure out how to disable CGO
+ENV CGO_ENABLED=1
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o ./server -a -ldflags '-linkmode external -extldflags "-static"' ./main.go
+RUN go build -o ./server -a -ldflags '-linkmode external -extldflags "-static"' ./main.go
 
 ##
 ## STEP 3 - PRODUCTION CONTAINER PACKAGE

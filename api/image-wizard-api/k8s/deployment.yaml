@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: image-wizard-api
-          image: # todo pull image from docker hub
+          image: jordanfox/image-wizard-api:latest
           ports:
             - containerPort: 5000
 
@@ -24,8 +24,9 @@ kind: Service
 metadata:
   name: image-wizard-api-srvc
 spec:
+  type: NodePort
   selector:
     app: image-wizard-api
   ports:
-    - port: 5000
-      targetPort: 5000
+   - port: 5000
+     nodePort: 30000

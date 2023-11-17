@@ -6,7 +6,7 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("http://image-wizard-api-service:5000");
+      const response = await fetch("http://image-wizard-api-srvc:5000");
       const text = await response.text();
       setRes(text);
     }

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: image-wizard-frontend
-          image: jordanfox/image-wizard-frontend:latest
+          image: jordanfox/image-wizard-frontend:master
           ports:
             - containerPort: 3000
 

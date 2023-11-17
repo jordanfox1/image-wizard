@@ -13,7 +13,7 @@ jobs:
       matrix:
         include:
           - context: ./api/image-wizard-api
-            dockerfile: jordanfox/image-wizard-api/dockerfile
+            dockerfile: ./api/image-wizard-api/dockerfile
             image: jordanfox/image-wizard-api
 
           - context: ./frontend/image-wizard-frontend

@@ -13,11 +13,11 @@ jobs:
       matrix:
         include:
           - context: ./api/image-wizard-api
-            dockerfile: dockerfile
+            dockerfile: jordanfox/image-wizard-api/dockerfile
             image: jordanfox/image-wizard-api
 
           - context: ./frontend/image-wizard-frontend
-            dockerfile: dockerfile
+            dockerfile: ./frontend/image-wizard-frontend/dockerfile
             image: jordanfox/image-wizard-frontend
     permissions:
       contents: read

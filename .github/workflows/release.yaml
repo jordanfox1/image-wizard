@@ -8,12 +8,12 @@ on:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
-      matrix:
-        include:
-          - dockerfile: ./api/image-wizrd-api/dockerfile
-            image: jordanfox/image-wizard-api
-          - dockerfile: ./api/image-wizrd-frontend/dockerfile
-            image: jordanfox/image-wizard-frontend
+    matrix:
+      include:
+        - dockerfile: ./api/image-wizrd-api/dockerfile
+          image: jordanfox/image-wizard-api
+        - dockerfile: ./api/image-wizrd-frontend/dockerfile
+          image: jordanfox/image-wizard-frontend
     permissions:
       contents: read
       packages: write

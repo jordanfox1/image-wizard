@@ -12,9 +12,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./api/image-wizard-api/dockerfile
+          - context: ./api/image-wizard-api
+            dockerfile: dockerfile
             image: jordanfox/image-wizard-api
-          - dockerfile: ./frontend/image-wizard-frontend/dockerfile
+
+          - context: ./frontend/image-wizard-frontend
+            dockerfile: dockerfile
             image: jordanfox/image-wizard-frontend
     permissions:
       contents: read
@@ -23,7 +26,7 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-      
+
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
@@ -39,7 +42,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: .
+          context: ${{ matrix.context }}
           file: ${{ matrix.dockerfile }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}

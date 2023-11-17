@@ -1,12 +1,21 @@
-"use server";
-export default async function Home() {
-  const response = await fetch("http://image-wizard-api-srvc:5000");
-  const text = await response.text();
+"use client";
+import { useState, useEffect } from "react";
+
+export default function Home() {
+  const [res, setRes] = useState<string>();
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch("http://192.168.49.2:31726");
+      const text = await response.text();
+      setRes(text);
+    }
+    fetchData();
+  }, []);
 
   return (
     <main>
-      <div>{text}</div> 
+      <div>{res}</div>
     </main>
   );
-
 }

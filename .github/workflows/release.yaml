@@ -14,7 +14,7 @@ jobs:
         include:
           - dockerfile: ./api/image-wizard-api/dockerfile
             image: jordanfox/image-wizard-api
-          - dockerfile: ./api/image-wizard-frontend/dockerfile
+          - dockerfile: ./frontend/image-wizard-frontend/dockerfile
             image: jordanfox/image-wizard-frontend
     permissions:
       contents: read

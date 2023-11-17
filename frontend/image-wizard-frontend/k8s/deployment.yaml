@@ -15,6 +15,7 @@ spec:
       containers:
         - name: image-wizard-frontend
           image: jordanfox/image-wizard-frontend:master
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
 

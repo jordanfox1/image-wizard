@@ -31,16 +31,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push image-wizard-api
-        uses: docker/build-push-action@v5
-        with:
-          context: ./api/image-wizard-api
-          push: true
-          tags: latest
 
       - name: Build and push image-wizard-frontend
         uses: docker/build-push-action@v5
         with:
           context: ./frontend/image-wizard-frontend
+          push: true
+          tags: latest
+
+      - name: Build and push image-wizard-api
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api/image-wizard-api
           push: true
           tags: latest

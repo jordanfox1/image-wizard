@@ -25,10 +25,9 @@ kind: Service
 metadata:
   name: image-wizard-frontend-srvc
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: image-wizard-frontend
   ports:
     - port: 3000
       targetPort: 3000
-      nodePort: 30001

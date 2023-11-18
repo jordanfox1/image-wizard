@@ -1,21 +1,11 @@
-"use client";
-import { useState, useEffect } from "react";
-
+import ImageUpload from './components/image-upload/imageUpload'
 export default function Home() {
-  const [res, setRes] = useState<string>();
-
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch("http://image-wizard.local/api");
-      const text = await response.text();
-      setRes(text);
-    }
-    fetchData();
-  }, []);
 
   return (
     <main>
-      <div>{res}</div>
+      <h1>Welcome to the image wizard</h1>
+      <h2>reformat your images below</h2>
+      <ImageUpload />
     </main>
   );
 }

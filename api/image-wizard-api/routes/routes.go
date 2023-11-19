@@ -3,7 +3,6 @@ package routes
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/handlers"
-	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/middleware"
 )
 
 func SetupRoutes(app *fiber.App) {
@@ -13,7 +12,7 @@ func SetupRoutes(app *fiber.App) {
 		return c.SendString("Hello, World 👋 - from image wizard api")
 	})
 
-	api.Post("/convert", middleware.ValidateImage, func(c *fiber.Ctx) error {
+	api.Post("/convert", func(c *fiber.Ctx) error {
 		desiredFormat := c.Query("format")
 		// TODO: handle improper desired format
 

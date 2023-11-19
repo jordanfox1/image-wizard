@@ -3,49 +3,104 @@ package routes_test
 import (
 	"bytes"
 	"io"
+	"log"
 	"net/http/httptest"
-	"strings"
+	"os"
 	"testing"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/routes"
+	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/utils"
 )
 
-func TestConvertEndpoint(t *testing.T) {
-
-	// Create a new fiber app and setup routes
-	app := fiber.New()
+func setupTestApp() *fiber.App {
+	app := fiber.New(fiber.Config{
+		BodyLimit: 1024 * 1024 * 20, // 10MB max request body size
+	})
 	routes.SetupRoutes(app)
+	return app
+}
 
-	// Create sample images to test
-	jpgImage := []byte("sample jpg image bytes")
-	pngImage := []byte("sample png image bytes")
+var app = setupTestApp()
 
-	// Test converting JPG to PNG
-	req := httptest.NewRequest("POST", "/api/convert?format=png", bytes.NewReader(jpgImage))
-	resp, _ := app.Test(req)
+func getTestImage(imagePath string) []byte {
+	image, err := os.ReadFile(imagePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return image
+}
+
+func TestConvertEndpoint(t *testing.T) {
+	testCases := []struct {
+		name                string
+		inputFormat         string
+		desiredFormat       string
+		inputImagePath      string
+		expectedContentType string
+		expectedStatus      int
+		expectedError       error
+	}{
+		{
+			name:                "JPG to PNG",
+			inputFormat:         "jpg",
+			desiredFormat:       "png",
+			inputImagePath:      "../test/images/jpg/foo.jpg",
+			expectedContentType: "image/png",
+			expectedStatus:      200,
+			expectedError:       nil,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			inputImage := getTestImage(tc.inputImagePath)
+			req := httptest.NewRequest("POST", "/api/convert?format="+tc.desiredFormat, bytes.NewReader(inputImage))
+
+			resp, err := app.Test(req, -1)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if resp.StatusCode != tc.expectedStatus {
+				t.Errorf("Expected status %d but got %d", tc.expectedStatus, resp.StatusCode)
+			}
+
+			outputImage, err := io.ReadAll(resp.Body)
+			if err != nil {
+				t.Fatal(err)
+			}
+			resp.Body.Close()
+
+			// Assert expected image format
+			actualContentType := utils.GetContentType(outputImage)
+			if tc.expectedContentType != actualContentType {
+				t.Errorf("Expected type %s but got %s", tc.expectedContentType, actualContentType)
+			}
+		})
+	}
+}
+
+func TestRootEndpoint(t *testing.T) {
+	req := httptest.NewRequest("GET", "/api/", nil)
+	resp, err := app.Test(req)
+
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if resp.StatusCode != 200 {
 		t.Errorf("Expected status 200 but got %d", resp.StatusCode)
 	}
 
-	pngImageBytes, _ := io.ReadAll(resp.Body)
-	resp.Body.Close()
-	if !strings.Contains(string(pngImageBytes), "png") {
-		t.Error("Expected png image in response but didn't get it")
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatal(err)
 	}
+	body := string(bodyBytes)
 
-	// Test converting PNG to JPG
-	req = httptest.NewRequest("POST", "/api/convert?format=jpg", bytes.NewReader(pngImage))
-	resp, _ = app.Test(req)
-
-	if resp.StatusCode != 200 {
-		t.Errorf("Expected status 200 but got %d", resp.StatusCode)
-	}
-
-	jpgImageBytes, _ := io.ReadAll(resp.Body)
-	resp.Body.Close()
-	if !strings.Contains(string(jpgImageBytes), "jpg") {
-		t.Error("Expected jpg image in response but didn't get it")
+	if body != "Hello, World 👋 - from image wizard api" {
+		t.Errorf("Expected 'Hello, World 👋 - from image wizard api' but got '%s'", body)
 	}
 }

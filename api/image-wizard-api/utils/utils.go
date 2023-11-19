@@ -4,12 +4,15 @@ import (
 	"bytes"
 	"fmt"
 	"image"
+	"image/gif"
 	"image/jpeg"
 	"image/png"
 	"net/http"
 	"strings"
 
 	"github.com/chai2010/webp"
+	"golang.org/x/image/bmp"
+	"golang.org/x/image/tiff"
 )
 
 func IsPNG(imageData []byte) bool {
@@ -53,6 +56,30 @@ func DecodeImage(inputImageData []byte, contentType string) (image.Image, error)
 			return nil, err
 		}
 		return webp, nil
+
+	case "image/gif":
+		// Decode GIF image
+		gif, err := gif.Decode(bytes.NewReader(inputImageData))
+		if err != nil {
+			return nil, err
+		}
+		return gif, nil
+
+	case "image/tiff":
+		// Decode TIFF image
+		tiff, err := tiff.Decode(bytes.NewReader(inputImageData))
+		if err != nil {
+			return nil, err
+		}
+		return tiff, nil
+
+	case "image/bmp":
+		// Decode TIFF image
+		bmp, err := bmp.Decode(bytes.NewReader(inputImageData))
+		if err != nil {
+			return nil, err
+		}
+		return bmp, nil
 	}
 
 	return nil, fmt.Errorf("unsupported image format: %s", contentType)

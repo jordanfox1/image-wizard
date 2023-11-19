@@ -20,9 +20,25 @@ jobs:
           go mod download
           go test -v -cover ./...
 
+  run-frontend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20.9.0"
+      - name: run tests
+        run: |
+          cd ./frontend/image-wizard-frontend
+          npm i pnpm -g
+          pnpm i
+          pnpm run lint
+          pnpm run test-ci
+
   build-and-push-image:
     runs-on: ubuntu-latest
-    needs: run-api-tests
+    needs: [run-api-tests, run-frontend-tests]
     strategy:
       fail-fast: false
       matrix:

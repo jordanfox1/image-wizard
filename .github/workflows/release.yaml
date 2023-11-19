@@ -15,7 +15,7 @@ jobs:
         with:
           go-version: "1.21.1"
       - name: Change to project directory
-        run: cd ./api/image-wizard-api && ls
+        run: cd ./api/image-wizard-api && ls && pwd
       - name: Install dependencies
         run: go mod download
       - name: Build

@@ -17,7 +17,7 @@ jobs:
       - name: Change to project directory
         run: cd ./api/image-wizard-api && ls && pwd
       - name: Install dependencies
-        run: go mod download
+        run: pwd && go mod download
       - name: Build
         run: go build -v ./...
       - name: Test with the Go CLI

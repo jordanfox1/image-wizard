@@ -18,6 +18,7 @@ jobs:
     steps:
       - name: Run API Tests
         run: |
+          ls
           cd ./api/image-wizard-api/
           go test -v -cover ./...
 

@@ -14,16 +14,11 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: "1.21.1"
-      - name: Change to project directory
-        run: cd ./api/image-wizard-api && ls && pwd
-      - name: Install dependencies
-        run: pwd && go mod download
-      - name: Build
-        run: go build -v ./...
-      - name: Test with the Go CLI
-        run: go test -v -cover ./...
-
-
+      - name: run tests
+        run: |
+          cd ./api/image-wizard-api
+          go mod download
+          go test -v -cover ./...
 
   build-and-push-image:
     runs-on: ubuntu-latest

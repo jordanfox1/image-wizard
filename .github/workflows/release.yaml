@@ -14,6 +14,8 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: '1.21.1'
+      name: Cheng to project directory
+        run: cd ./api/image-wizard-api
       - name: Install dependencies
         run: go get .
       - name: Build
@@ -24,6 +26,7 @@ jobs:
 
   build-and-push-image:
     runs-on: ubuntu-latest
+    needs: run-api-tests
     strategy:
       fail-fast: false
       matrix:

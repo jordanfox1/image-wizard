@@ -16,7 +16,6 @@ func SetupRoutes(app *fiber.App) {
 
 	api.Post("/convert", func(c *fiber.Ctx) error {
 		desiredFormat := c.Query("format")
-		// TODO: handle improper desired format
 
 		convertedImage, err := handlers.ConvertImage(c.Body(), desiredFormat)
 		if err != nil {

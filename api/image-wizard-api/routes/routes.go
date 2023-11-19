@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"net/http"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/handlers"
 )
@@ -18,7 +20,8 @@ func SetupRoutes(app *fiber.App) {
 
 		convertedImage, err := handlers.ConvertImage(c.Body(), desiredFormat)
 		if err != nil {
-			return err
+			// Return a custom error response with the error message
+			return c.Status(http.StatusInternalServerError).SendString(err.Error())
 		}
 
 		return c.Send(convertedImage)

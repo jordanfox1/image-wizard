@@ -2,7 +2,10 @@ module github.com/jordanfox1/image-wizard-api/api/image-wizard-api
 
 go 1.21.1
 
-require github.com/gofiber/fiber/v2 v2.51.0
+require (
+	github.com/chai2010/webp v1.1.1
+	github.com/gofiber/fiber/v2 v2.51.0
+)
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect

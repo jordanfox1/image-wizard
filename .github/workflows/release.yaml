@@ -9,15 +9,17 @@ jobs:
   run-api-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v4
-
-      - name: run tests
-        runs: |
-          go install
-          cd api/image-wizard-api
-          go mod download
-          go test -v -cover ./...
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21.1'
+      - name: Install dependencies
+        run: go get .
+      - name: Build
+        run: go build -v ./...
+      - name: Test with the Go CLI
+        run: go test
 
 
   build-and-push-image:

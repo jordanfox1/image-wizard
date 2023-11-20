@@ -44,7 +44,9 @@ func DecodeImage(inputImageData []byte, contentType string) (image.Image, error)
 	case "image/png":
 		// Decode PNG image
 		png, err := png.Decode(bytes.NewReader(inputImageData))
+
 		if err != nil {
+			fmt.Println(err)
 			return nil, err
 		}
 		return png, nil
@@ -53,6 +55,7 @@ func DecodeImage(inputImageData []byte, contentType string) (image.Image, error)
 		// Decode JPEG image
 		jpg, err := jpeg.Decode(bytes.NewReader(inputImageData))
 		if err != nil {
+			fmt.Println(err)
 			return nil, err
 		}
 		return jpg, nil
@@ -61,6 +64,7 @@ func DecodeImage(inputImageData []byte, contentType string) (image.Image, error)
 		// Decode WebP image
 		webp, err := webp.Decode(bytes.NewReader(inputImageData))
 		if err != nil {
+			fmt.Println(err)
 			return nil, err
 		}
 		return webp, nil
@@ -69,6 +73,7 @@ func DecodeImage(inputImageData []byte, contentType string) (image.Image, error)
 		// Decode GIF image
 		gif, err := gif.Decode(bytes.NewReader(inputImageData))
 		if err != nil {
+			fmt.Println(err)
 			return nil, err
 		}
 		return gif, nil
@@ -77,6 +82,7 @@ func DecodeImage(inputImageData []byte, contentType string) (image.Image, error)
 		// Decode TIFF image
 		bmp, err := bmp.Decode(bytes.NewReader(inputImageData))
 		if err != nil {
+			fmt.Println(err)
 			return nil, err
 		}
 		return bmp, nil
@@ -86,6 +92,7 @@ func DecodeImage(inputImageData []byte, contentType string) (image.Image, error)
 		// Decode TIFF image
 		tiff, err := tiff.Decode(bytes.NewReader(inputImageData))
 		if err != nil {
+			fmt.Println(err)
 			return nil, err
 		}
 		return tiff, nil
@@ -158,6 +165,7 @@ func EncodeImage(desiredFormat string, img image.Image) ([]byte, error) {
 func determineFileType(imageData []byte) (string, error) {
 	imgType, err := filetype.Match(imageData)
 	if err != nil {
+		fmt.Println(err)
 		return "", err
 	}
 

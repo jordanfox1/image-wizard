@@ -16,11 +16,13 @@ func ConvertImage(inputImageData []byte, desiredFormat string) ([]byte, error) {
 
 	decodedImg, err := utils.DecodeImage(inputImageData, inputImageContentType)
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 
 	convertedImage, err := utils.EncodeImage(desiredFormat, decodedImg)
 	if err != nil || convertedImage == nil {
+		fmt.Println(err)
 		return nil, err
 	}
 

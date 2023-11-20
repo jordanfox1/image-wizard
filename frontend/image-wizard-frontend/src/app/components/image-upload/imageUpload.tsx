@@ -26,9 +26,6 @@ export function ImageUpload() {
 
       const response = await fetch(`${apiEndpoint}/convert?format=${desiredFormat}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
         body: formData,
       });
 
@@ -39,10 +36,11 @@ export function ImageUpload() {
       // Assuming the API returns the image bytes
       const newImageBytes = await response.arrayBuffer();
 
-      // Convert the image bytes to a Data URL
-      const newDataURL = `data:image/${desiredFormat};base64,${btoa(
-        String.fromCharCode.apply(null, new Uint8Array(newImageBytes))
-      )}`;
+      // Convert the image bytes to a base64-encoded string
+      const newImageBase64 = btoa(new TextDecoder().decode(new Uint8Array(newImageBytes)));
+
+      // Construct the Data URL directly
+      const newDataURL = `data:image/${desiredFormat};base64,${newImageBytes}`;
 
       // Update the state with the new image data
       setImages(prevImages => {

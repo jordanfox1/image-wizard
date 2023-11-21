@@ -45,6 +45,7 @@ func SetupRoutes(app *fiber.App) {
 		dataURL := fmt.Sprintf("data:image/%s;base64,%s", desiredFormat, base64.StdEncoding.EncodeToString(convertedImage))
 
 		fmt.Println("Image converted successfully")
-		return c.JSON(fiber.Map{"status": 200, "message": "Image converted successfully", "dataURL": dataURL, "fileName": outputFileName})
+		res := c.JSON(fiber.Map{"status": 200, "message": "Image converted successfully", "dataURL": dataURL, "fileName": outputFileName})
+		return res
 	})
 }

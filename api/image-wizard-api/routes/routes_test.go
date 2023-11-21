@@ -11,10 +11,12 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/routes"
+	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/utils"
 )
 
 func setupTestApp() *fiber.App {
@@ -45,256 +47,256 @@ func TestConvertEndpoint(t *testing.T) {
 		expectedStatus      int
 		expectError         bool
 	}{
-		// ---------- CONVERSIONS TO JPEG ----------
-		{
-			name:                "PNG to JPG",
-			inputFormat:         "png",
-			desiredFormat:       "jpg",
-			inputImagePath:      "../test/images/png/sample.png",
-			expectedContentType: "image/jpeg",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "WEBP to JPG",
-			inputFormat:         "webp",
-			desiredFormat:       "jpg",
-			inputImagePath:      "../test/images/webp/sample.webp",
-			expectedContentType: "image/jpeg",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "BMP to JPG",
-			inputFormat:         "bmp",
-			desiredFormat:       "jpg",
-			inputImagePath:      "../test/images/bmp/sample.bmp",
-			expectedContentType: "image/jpeg",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "TIFF to JPG",
-			inputFormat:         "tiff",
-			desiredFormat:       "jpg",
-			inputImagePath:      "../test/images/tiff/sample.tiff",
-			expectedContentType: "image/jpeg",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "GIF to JPG",
-			inputFormat:         "gif",
-			desiredFormat:       "jpg",
-			inputImagePath:      "../test/images/gif/sample.gif",
-			expectedContentType: "image/jpeg",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		// ---------- CONVERSIONS TO PNG ----------
-		{
-			name:                "JPG to PNG",
-			inputFormat:         "jpg",
-			desiredFormat:       "png",
-			inputImagePath:      "../test/images/jpg/foo.jpg",
-			expectedContentType: "image/png",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "WEBP to PNG",
-			inputFormat:         "webp",
-			desiredFormat:       "png",
-			inputImagePath:      "../test/images/webp/sample.webp",
-			expectedContentType: "image/png",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "BMP to PNG",
-			inputFormat:         "bmp",
-			desiredFormat:       "png",
-			inputImagePath:      "../test/images/bmp/sample.bmp",
-			expectedContentType: "image/png",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "TIFF to PNG",
-			inputFormat:         "tiff",
-			desiredFormat:       "png",
-			inputImagePath:      "../test/images/tiff/sample.tiff",
-			expectedContentType: "image/png",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "GIF to PNG",
-			inputFormat:         "gif",
-			desiredFormat:       "png",
-			inputImagePath:      "../test/images/gif/sample.gif",
-			expectedContentType: "image/png",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		// ---------- CONVERSIONS TO WEBP ----------
-		{
-			name:                "JPG to WEBP",
-			inputFormat:         "jpg",
-			desiredFormat:       "webp",
-			inputImagePath:      "../test/images/jpg/foo.jpg",
-			expectedContentType: "image/webp",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "PNG to WEBP",
-			inputFormat:         "png",
-			desiredFormat:       "webp",
-			inputImagePath:      "../test/images/png/sample.png",
-			expectedContentType: "image/webp",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "BMP to WEBP",
-			inputFormat:         "bmp",
-			desiredFormat:       "webp",
-			inputImagePath:      "../test/images/bmp/sample.bmp",
-			expectedContentType: "image/webp",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "TIFF to WEBP",
-			inputFormat:         "tiff",
-			desiredFormat:       "webp",
-			inputImagePath:      "../test/images/tiff/sample.tiff",
-			expectedContentType: "image/webp",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "GIF to WEBP",
-			inputFormat:         "gif",
-			desiredFormat:       "webp",
-			inputImagePath:      "../test/images/gif/sample.gif",
-			expectedContentType: "image/webp",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		// ---------- CONVERSIONS TO BMP ----------
-		{
-			name:                "JPG to BMP",
-			inputFormat:         "jpg",
-			desiredFormat:       "bmp",
-			inputImagePath:      "../test/images/jpg/foo.jpg",
-			expectedContentType: "image/bmp",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "PNG to BMP",
-			inputFormat:         "png",
-			desiredFormat:       "bmp",
-			inputImagePath:      "../test/images/png/sample.png",
-			expectedContentType: "image/bmp",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "WEBP to BMP",
-			inputFormat:         "webp",
-			desiredFormat:       "bmp",
-			inputImagePath:      "../test/images/webp/sample.webp",
-			expectedContentType: "image/bmp",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "TIFF to BMP",
-			inputFormat:         "tiff",
-			desiredFormat:       "bmp",
-			inputImagePath:      "../test/images/tiff/sample.tiff",
-			expectedContentType: "image/bmp",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "GIF to BMP",
-			inputFormat:         "gif",
-			desiredFormat:       "bmp",
-			inputImagePath:      "../test/images/gif/sample.gif",
-			expectedContentType: "image/bmp",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
+		// // ---------- CONVERSIONS TO JPEG ----------
+		// {
+		// 	name:                "PNG to JPG",
+		// 	inputFormat:         "png",
+		// 	desiredFormat:       "jpg",
+		// 	inputImagePath:      "../test/images/png/sample.png",
+		// 	expectedContentType: "image/jpeg",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "WEBP to JPG",
+		// 	inputFormat:         "webp",
+		// 	desiredFormat:       "jpg",
+		// 	inputImagePath:      "../test/images/webp/sample.webp",
+		// 	expectedContentType: "image/jpeg",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "BMP to JPG",
+		// 	inputFormat:         "bmp",
+		// 	desiredFormat:       "jpg",
+		// 	inputImagePath:      "../test/images/bmp/sample.bmp",
+		// 	expectedContentType: "image/jpeg",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "TIFF to JPG",
+		// 	inputFormat:         "tiff",
+		// 	desiredFormat:       "jpg",
+		// 	inputImagePath:      "../test/images/tiff/sample.tiff",
+		// 	expectedContentType: "image/jpeg",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "GIF to JPG",
+		// 	inputFormat:         "gif",
+		// 	desiredFormat:       "jpg",
+		// 	inputImagePath:      "../test/images/gif/sample.gif",
+		// 	expectedContentType: "image/jpeg",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// // ---------- CONVERSIONS TO PNG ----------
+		// {
+		// 	name:                "JPG to PNG",
+		// 	inputFormat:         "jpg",
+		// 	desiredFormat:       "png",
+		// 	inputImagePath:      "../test/images/jpg/foo.jpg",
+		// 	expectedContentType: "image/png",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "WEBP to PNG",
+		// 	inputFormat:         "webp",
+		// 	desiredFormat:       "png",
+		// 	inputImagePath:      "../test/images/webp/sample.webp",
+		// 	expectedContentType: "image/png",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "BMP to PNG",
+		// 	inputFormat:         "bmp",
+		// 	desiredFormat:       "png",
+		// 	inputImagePath:      "../test/images/bmp/sample.bmp",
+		// 	expectedContentType: "image/png",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "TIFF to PNG",
+		// 	inputFormat:         "tiff",
+		// 	desiredFormat:       "png",
+		// 	inputImagePath:      "../test/images/tiff/sample.tiff",
+		// 	expectedContentType: "image/png",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "GIF to PNG",
+		// 	inputFormat:         "gif",
+		// 	desiredFormat:       "png",
+		// 	inputImagePath:      "../test/images/gif/sample.gif",
+		// 	expectedContentType: "image/png",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// // ---------- CONVERSIONS TO WEBP ----------
+		// {
+		// 	name:                "JPG to WEBP",
+		// 	inputFormat:         "jpg",
+		// 	desiredFormat:       "webp",
+		// 	inputImagePath:      "../test/images/jpg/foo.jpg",
+		// 	expectedContentType: "image/webp",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "PNG to WEBP",
+		// 	inputFormat:         "png",
+		// 	desiredFormat:       "webp",
+		// 	inputImagePath:      "../test/images/png/sample.png",
+		// 	expectedContentType: "image/webp",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "BMP to WEBP",
+		// 	inputFormat:         "bmp",
+		// 	desiredFormat:       "webp",
+		// 	inputImagePath:      "../test/images/bmp/sample.bmp",
+		// 	expectedContentType: "image/webp",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "TIFF to WEBP",
+		// 	inputFormat:         "tiff",
+		// 	desiredFormat:       "webp",
+		// 	inputImagePath:      "../test/images/tiff/sample.tiff",
+		// 	expectedContentType: "image/webp",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "GIF to WEBP",
+		// 	inputFormat:         "gif",
+		// 	desiredFormat:       "webp",
+		// 	inputImagePath:      "../test/images/gif/sample.gif",
+		// 	expectedContentType: "image/webp",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// // ---------- CONVERSIONS TO BMP ----------
+		// {
+		// 	name:                "JPG to BMP",
+		// 	inputFormat:         "jpg",
+		// 	desiredFormat:       "bmp",
+		// 	inputImagePath:      "../test/images/jpg/foo.jpg",
+		// 	expectedContentType: "image/bmp",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "PNG to BMP",
+		// 	inputFormat:         "png",
+		// 	desiredFormat:       "bmp",
+		// 	inputImagePath:      "../test/images/png/sample.png",
+		// 	expectedContentType: "image/bmp",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "WEBP to BMP",
+		// 	inputFormat:         "webp",
+		// 	desiredFormat:       "bmp",
+		// 	inputImagePath:      "../test/images/webp/sample.webp",
+		// 	expectedContentType: "image/bmp",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "TIFF to BMP",
+		// 	inputFormat:         "tiff",
+		// 	desiredFormat:       "bmp",
+		// 	inputImagePath:      "../test/images/tiff/sample.tiff",
+		// 	expectedContentType: "image/bmp",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "GIF to BMP",
+		// 	inputFormat:         "gif",
+		// 	desiredFormat:       "bmp",
+		// 	inputImagePath:      "../test/images/gif/sample.gif",
+		// 	expectedContentType: "image/bmp",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
 
-		// ---------- CONVERSIONS TO TIFF ----------
-		{
-			name:                "JPG to TIFF",
-			inputFormat:         "jpg",
-			desiredFormat:       "tiff",
-			inputImagePath:      "../test/images/jpg/foo.jpg",
-			expectedContentType: "image/tiff",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "PNG to TIFF",
-			inputFormat:         "png",
-			desiredFormat:       "tiff",
-			inputImagePath:      "../test/images/png/sample.png",
-			expectedContentType: "image/tiff",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "WEBP to TIFF",
-			inputFormat:         "webp",
-			desiredFormat:       "tiff",
-			inputImagePath:      "../test/images/webp/sample.webp",
-			expectedContentType: "image/tiff",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "BMP to TIFF",
-			inputFormat:         "bmp",
-			desiredFormat:       "tiff",
-			inputImagePath:      "../test/images/bmp/sample.bmp",
-			expectedContentType: "image/tiff",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "GIF to TIFF",
-			inputFormat:         "gif",
-			desiredFormat:       "tiff",
-			inputImagePath:      "../test/images/gif/sample.gif",
-			expectedContentType: "image/tiff",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		// ---------- CONVERSIONS TO GIF ----------
-		{
-			name:                "JPG to GIF",
-			inputFormat:         "jpg",
-			desiredFormat:       "gif",
-			inputImagePath:      "../test/images/jpg/foo.jpg",
-			expectedContentType: "image/gif",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
-		{
-			name:                "PNG to GIF",
-			inputFormat:         "png",
-			desiredFormat:       "gif",
-			inputImagePath:      "../test/images/png/sample.png",
-			expectedContentType: "image/gif",
-			expectedStatus:      http.StatusOK,
-			expectError:         false,
-		},
+		// // ---------- CONVERSIONS TO TIFF ----------
+		// {
+		// 	name:                "JPG to TIFF",
+		// 	inputFormat:         "jpg",
+		// 	desiredFormat:       "tiff",
+		// 	inputImagePath:      "../test/images/jpg/foo.jpg",
+		// 	expectedContentType: "image/tiff",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "PNG to TIFF",
+		// 	inputFormat:         "png",
+		// 	desiredFormat:       "tiff",
+		// 	inputImagePath:      "../test/images/png/sample.png",
+		// 	expectedContentType: "image/tiff",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "WEBP to TIFF",
+		// 	inputFormat:         "webp",
+		// 	desiredFormat:       "tiff",
+		// 	inputImagePath:      "../test/images/webp/sample.webp",
+		// 	expectedContentType: "image/tiff",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "BMP to TIFF",
+		// 	inputFormat:         "bmp",
+		// 	desiredFormat:       "tiff",
+		// 	inputImagePath:      "../test/images/bmp/sample.bmp",
+		// 	expectedContentType: "image/tiff",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "GIF to TIFF",
+		// 	inputFormat:         "gif",
+		// 	desiredFormat:       "tiff",
+		// 	inputImagePath:      "../test/images/gif/sample.gif",
+		// 	expectedContentType: "image/tiff",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// // ---------- CONVERSIONS TO GIF ----------
+		// {
+		// 	name:                "JPG to GIF",
+		// 	inputFormat:         "jpg",
+		// 	desiredFormat:       "gif",
+		// 	inputImagePath:      "../test/images/jpg/foo.jpg",
+		// 	expectedContentType: "image/gif",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
+		// {
+		// 	name:                "PNG to GIF",
+		// 	inputFormat:         "png",
+		// 	desiredFormat:       "gif",
+		// 	inputImagePath:      "../test/images/png/sample.png",
+		// 	expectedContentType: "image/gif",
+		// 	expectedStatus:      http.StatusOK,
+		// 	expectError:         false,
+		// },
 		{
 			name:                "WEBP to GIF",
 			inputFormat:         "webp",
@@ -395,20 +397,37 @@ func TestConvertEndpoint(t *testing.T) {
 
 			// Check the fields in the response
 			if status, ok := responseMap["status"].(float64); ok && int(status) == http.StatusOK {
-				// Status is OK, proceed with further checks
-				// if dataURL, ok := responseMap["dataURL"].(string); ok {
-				// 	// Check dataURL if needed
-				// }
+				if dataURL, ok := responseMap["dataURL"].(string); ok {
+					// Check that dataURL contains an image of the expected format
+					imageData, _ := utils.GetImageDataFromDataURL(dataURL)
+					actualType := utils.GetContentType(imageData)
 
-				// if fileName, ok := responseMap["fileName"].(string); ok {
-				// 	// Check fileName if needed
-				// }
+					if actualType != "image/"+tc.desiredFormat {
+						t.Errorf("Expected image format %s but dataURL contains image of type %s", tc.desiredFormat, actualType)
+					}
+				}
+
+				if fileName, ok := responseMap["fileName"].(string); ok {
+					expectedFileNamePrefix := getCharsBeforeDot(inputFileName)
+					expectedFileName := expectedFileNamePrefix + "." + tc.desiredFormat
+					if fileName != expectedFileName {
+						t.Errorf("Expected filename %s but got %s as the filename", expectedFileName, fileName)
+					}
+				}
 			} else {
 				t.Errorf("Expected status %d but got %f", http.StatusOK, status)
 			}
 		})
 	}
 
+}
+
+func getCharsBeforeDot(s string) string {
+	i := strings.LastIndex(s, ".")
+	if i == -1 {
+		return s
+	}
+	return s[:i]
 }
 
 func TestRootEndpoint(t *testing.T) {

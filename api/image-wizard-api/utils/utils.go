@@ -2,11 +2,13 @@ package utils
 
 import (
 	"bytes"
+	"encoding/base64"
 	"fmt"
 	"image"
 	"image/gif"
 	"image/jpeg"
 	"image/png"
+	"log"
 	"net/http"
 	"strings"
 
@@ -170,4 +172,15 @@ func determineFileType(imageData []byte) (string, error) {
 	}
 
 	return imgType.MIME.Value, nil
+}
+
+func GetImageDataFromDataURL(dataURL string) ([]byte, error) {
+	b64data := dataURL[strings.IndexByte(dataURL, ',')+1:]
+	decodedData, err := base64.StdEncoding.DecodeString(b64data)
+	if err != nil {
+		log.Println("base64 decoding error --> ", err)
+		return nil, err
+	}
+
+	return decodedData, nil
 }

@@ -61,6 +61,8 @@ func SetupRoutes(app *fiber.App) {
 	// 	return c.JSON(fiber.Map{"status": 200, "message": "Image conversion successful", "data": decodedData})
 	// })
 	api.Post("/convert", func(c *fiber.Ctx) error {
+		fmt.Println("Incoming request to /convert endpoint")
+
 		input := c.FormValue("image")
 
 		b64data := input[strings.IndexByte(input, ',')+1:]
@@ -76,13 +78,14 @@ func SetupRoutes(app *fiber.App) {
 		convertedImage, err := handlers.ConvertImage(decodedData, desiredFormat)
 		if err != nil {
 			// Return a custom error response with the error message
+			fmt.Println("Image conversion failed:", err)
 			return c.Status(http.StatusInternalServerError).SendString(err.Error())
 		}
 
 		// Convert the image bytes to a data URL
 		dataURL := fmt.Sprintf("data:image/%s;base64,%s", desiredFormat, base64.StdEncoding.EncodeToString(convertedImage))
 
-		// Return the data URL in the response
+		fmt.Println("Image converted successfully")
 		return c.JSON(fiber.Map{"status": 200, "message": "Image converted successfully", "dataURL": dataURL})
 	})
 }

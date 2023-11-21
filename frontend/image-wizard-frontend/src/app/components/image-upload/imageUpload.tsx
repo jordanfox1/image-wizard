@@ -16,13 +16,14 @@ export function ImageUpload() {
     setImages(imageList as never[]);
   };
 
-  const convertToNewFormat = async (imageData, desiredFormat, addUpdateIndex) => {
+  const convertToNewFormat = async (imageData, fileName: string, desiredFormat: string, addUpdateIndex) => {
     try {
       const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://image-wizard.local/api';
       console.log(apiEndpoint)
 
       const formData = new FormData();
       formData.append('image', imageData);
+      formData.append('fileName', fileName);
 
 
       const response = await fetch(`${apiEndpoint}/convert?format=${desiredFormat}`, {
@@ -38,11 +39,14 @@ export function ImageUpload() {
 
       // Access the data URL directly from the response
       const dataURL = responseData.dataURL;
+      const newFileName =  responseData.fileName
 
-      // Update the state with the new image data
+      
       setImages(prevImages => {
         const updatedImages = [...prevImages];
+        const newFile = new File([updatedImages[addUpdateIndex].file], newFileName); 
         updatedImages[addUpdateIndex].dataURL = dataURL;
+        updatedImages[addUpdateIndex].file = newFile; 
         return updatedImages;
       });
     } catch (error) {
@@ -83,7 +87,7 @@ export function ImageUpload() {
                 <Image src={image.dataURL} alt="" width={100} height={100} />
                 <span>{image.file?.name}</span>
                 <div className="image-item__btn-wrapper">
-                  <button onClick={() => convertToNewFormat(image.dataURL, 'png', 0)}>
+                  <button onClick={() => convertToNewFormat(image.dataURL, image.file.name, 'png', 0)}>
                     Convert to new format
                   </button>
                   <button onClick={() => onImageRemove(index)}>Remove</button>

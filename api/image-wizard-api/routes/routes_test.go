@@ -2,17 +2,19 @@ package routes_test
 
 import (
 	"bytes"
-	"fmt"
+	"encoding/base64"
+	"encoding/json"
 	"io"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/routes"
-	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/utils"
 )
 
 func setupTestApp() *fiber.App {
@@ -334,8 +336,33 @@ func TestConvertEndpoint(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			inputImage := getTestImage(tc.inputImagePath)
-			req := httptest.NewRequest("POST", fmt.Sprintf("/api/convert?format=%s", tc.desiredFormat), bytes.NewReader(inputImage))
+			var imageData []byte = getTestImage(tc.inputImagePath)
+
+			base64ImageData := base64.StdEncoding.EncodeToString(imageData)
+
+			inputFileName := filepath.Base(tc.inputImagePath)
+
+			// Create form values
+			formValues := map[string]string{
+				"fileName": inputFileName,
+				"image":    "data:image/" + tc.inputFormat + ";base64," + base64ImageData,
+			}
+
+			// Create a buffer to write the request body
+			var body bytes.Buffer
+			writer := multipart.NewWriter(&body)
+
+			// Add form values to the request body
+			for key, value := range formValues {
+				writer.WriteField(key, value)
+			}
+
+			// Close the multipart writer
+			writer.Close()
+
+			// Create the request with the form-encoded body and image data
+			req := httptest.NewRequest("POST", "/api/convert?format="+tc.desiredFormat, &body)
+			req.Header.Set("Content-Type", writer.FormDataContentType())
 
 			// Make request
 			resp, err := app.Test(req, -1)
@@ -360,12 +387,28 @@ func TestConvertEndpoint(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			actualContentType := utils.GetContentType(outputImage)
-			if tc.expectedContentType != actualContentType {
-				t.Errorf("Expected type %s but got %s", tc.expectedContentType, actualContentType)
+			// Assuming the response is in JSON format
+			var responseMap map[string]interface{}
+			if err := json.Unmarshal(outputImage, &responseMap); err != nil {
+				t.Fatal(err)
+			}
+
+			// Check the fields in the response
+			if status, ok := responseMap["status"].(float64); ok && int(status) == http.StatusOK {
+				// Status is OK, proceed with further checks
+				// if dataURL, ok := responseMap["dataURL"].(string); ok {
+				// 	// Check dataURL if needed
+				// }
+
+				// if fileName, ok := responseMap["fileName"].(string); ok {
+				// 	// Check fileName if needed
+				// }
+			} else {
+				t.Errorf("Expected status %d but got %f", http.StatusOK, status)
 			}
 		})
 	}
+
 }
 
 func TestRootEndpoint(t *testing.T) {

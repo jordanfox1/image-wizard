@@ -28,7 +28,6 @@ func SetupRoutes(app *fiber.App) {
 		outputFileName := strings.TrimSuffix(inputFileName, filepath.Ext(inputFileName)) + "." + desiredFormat
 
 		b64data := inputImage[strings.IndexByte(inputImage, ',')+1:]
-		// Decode base64-encoded image data
 		decodedData, err := base64.StdEncoding.DecodeString(b64data)
 		if err != nil {
 			log.Println("base64 decoding error --> ", err)

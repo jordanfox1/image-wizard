@@ -64,15 +64,13 @@ func SetupRoutes(app *fiber.App) {
 		input := c.FormValue("image")
 
 		b64data := input[strings.IndexByte(input, ',')+1:]
-		fmt.Println(b64data)
 		// Decode base64-encoded image data
 		decodedData, err := base64.StdEncoding.DecodeString(b64data)
 		if err != nil {
 			log.Println("base64 decoding error --> ", err)
-			return c.JSON(fiber.Map{"status": 500, "message": "Base64 decoding error", "data": nil})
+			return c.JSON(fiber.Map{"status": 500, "message": "Base64 decoding error", "dataURL": ""})
 		}
 
-		fmt.Println(decodedData)
 		desiredFormat := c.Query("format")
 
 		convertedImage, err := handlers.ConvertImage(decodedData, desiredFormat)
@@ -81,6 +79,10 @@ func SetupRoutes(app *fiber.App) {
 			return c.Status(http.StatusInternalServerError).SendString(err.Error())
 		}
 
-		return c.Send(convertedImage)
+		// Convert the image bytes to a data URL
+		dataURL := fmt.Sprintf("data:image/%s;base64,%s", desiredFormat, base64.StdEncoding.EncodeToString(convertedImage))
+
+		// Return the data URL in the response
+		return c.JSON(fiber.Map{"status": 200, "message": "Image converted successfully", "dataURL": dataURL})
 	})
 }

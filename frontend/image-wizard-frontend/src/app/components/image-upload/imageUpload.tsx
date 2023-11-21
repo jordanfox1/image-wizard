@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import React from "react";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
 
@@ -33,19 +34,15 @@ export function ImageUpload() {
         throw new Error('Failed to convert image');
       }
 
-      // Assuming the API returns the image bytes
-      const newImageBytes = await response.arrayBuffer();
+      const responseData = await response.json();
 
-      // Convert the image bytes to a base64-encoded string
-      const newImageBase64 = btoa(new TextDecoder().decode(new Uint8Array(newImageBytes)));
-
-      // Construct the Data URL directly
-      const newDataURL = `data:image/${desiredFormat};base64,${newImageBytes}`;
+      // Access the data URL directly from the response
+      const dataURL = responseData.dataURL;
 
       // Update the state with the new image data
       setImages(prevImages => {
         const updatedImages = [...prevImages];
-        updatedImages[addUpdateIndex].dataURL = newDataURL;
+        updatedImages[addUpdateIndex].dataURL = dataURL;
         return updatedImages;
       });
     } catch (error) {
@@ -83,7 +80,7 @@ export function ImageUpload() {
             <button onClick={onImageRemoveAll}>Remove all images</button>
             {imageList.map((image, index) => (
               <div key={index} className="image-item">
-                <img src={image.dataURL} alt="" width={100} />
+                <Image src={image.dataURL} alt="" width={100} height={100} />
                 <span>{image.file?.name}</span>
                 <div className="image-item__btn-wrapper">
                   <button onClick={() => convertToNewFormat(image.dataURL, 'png', 0)}>

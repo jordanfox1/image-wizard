@@ -3,8 +3,6 @@ package routes
 import (
 	"encoding/base64"
 	"fmt"
-	"log"
-	"net/http"
 	"path/filepath"
 	"strings"
 
@@ -20,32 +18,23 @@ func SetupRoutes(app *fiber.App) {
 	})
 
 	api.Post("/convert", func(c *fiber.Ctx) error {
-		fmt.Println("Incoming request to /convert endpoint")
-
 		desiredFormat := c.Query("format")
-		inputImage := c.FormValue("image")
+		inputImageDataURL := c.FormValue("image")
 		inputFileName := c.FormValue("fileName")
 		outputFileName := strings.TrimSuffix(inputFileName, filepath.Ext(inputFileName)) + "." + desiredFormat
 
-		b64data := inputImage[strings.IndexByte(inputImage, ',')+1:]
-		decodedData, err := base64.StdEncoding.DecodeString(b64data)
+		convertedImage, err := handlers.ConvertImage(inputImageDataURL, desiredFormat)
 		if err != nil {
-			log.Println("base64 decoding error --> ", err)
-			return c.JSON(fiber.Map{"status": 500, "message": "Base64 decoding error", "dataURL": ""})
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 		}
 
-		convertedImage, err := handlers.ConvertImage(decodedData, desiredFormat)
-		if err != nil {
-			// Return a custom error response with the error message
-			fmt.Println("Image conversion failed:", err)
-			return c.Status(http.StatusInternalServerError).SendString(err.Error())
-		}
-
-		// Convert the image bytes to a data URL
 		dataURL := fmt.Sprintf("data:image/%s;base64,%s", desiredFormat, base64.StdEncoding.EncodeToString(convertedImage))
 
-		fmt.Println("Image converted successfully")
-		res := c.JSON(fiber.Map{"status": 200, "message": "Image converted successfully", "dataURL": dataURL, "fileName": outputFileName})
-		return res
+		return c.JSON(fiber.Map{
+			"status":   200,
+			"message":  "Image converted successfully",
+			"dataURL":  dataURL,
+			"fileName": outputFileName,
+		})
 	})
 }

@@ -7,7 +7,13 @@ import (
 	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/utils"
 )
 
-func ConvertImage(inputImageData []byte, desiredFormat string) ([]byte, error) {
+func ConvertImage(inputImageDataUrl string, desiredFormat string) ([]byte, error) {
+	inputImageData, err := utils.GetImageDataFromDataURL(inputImageDataUrl)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
 	inputImageContentType := utils.GetContentType(inputImageData)
 
 	if strings.Contains(inputImageContentType, desiredFormat) {

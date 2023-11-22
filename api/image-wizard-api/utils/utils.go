@@ -41,6 +41,16 @@ func GetContentType(imageData []byte) string {
 	return contentType
 }
 
+func determineFileType(imageData []byte) (string, error) {
+	imgType, err := filetype.Match(imageData)
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	return imgType.MIME.Value, nil
+}
+
 func DecodeImage(inputImageData []byte, contentType string) (image.Image, error) {
 	switch contentType {
 	case "image/png":
@@ -162,16 +172,6 @@ func EncodeImage(desiredFormat string, img image.Image) ([]byte, error) {
 	}
 
 	return nil, fmt.Errorf("unsupported image format: %s", desiredFormat)
-}
-
-func determineFileType(imageData []byte) (string, error) {
-	imgType, err := filetype.Match(imageData)
-	if err != nil {
-		fmt.Println(err)
-		return "", err
-	}
-
-	return imgType.MIME.Value, nil
 }
 
 func GetImageDataFromDataURL(dataURL string) ([]byte, error) {

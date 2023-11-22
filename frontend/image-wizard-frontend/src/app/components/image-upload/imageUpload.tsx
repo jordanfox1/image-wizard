@@ -57,7 +57,15 @@ export function ImageUpload() {
     }
   };
 
-  const [desiredFormat, setDesiredFormat] = useState('webp');
+  const [desiredFormats, setDesiredFormats] = useState(['webp']);
+
+  const handleChipChange = (value, index) => {
+    setDesiredFormats((prevFormats) => {
+      const updatedFormats = [...prevFormats];
+      updatedFormats[index] = value;
+      return updatedFormats;
+    });
+  };
 
   return (
     <div className="image-upload-wrapper-container">
@@ -85,7 +93,7 @@ export function ImageUpload() {
             {imageList.map((image, index) => (
               <>
                 <div className="format-select-btn-container">
-                  <Chip.Group multiple={false} value={desiredFormat} onChange={setDesiredFormat}>
+                  <Chip.Group multiple={false} value={desiredFormats[index]} onChange={(value) => handleChipChange(value, index)}>
                     <Chip value='webp'>WEBP</Chip>
                     <Chip value='png'>PNG</Chip>
                     <Chip value='jpeg'>JPEG</Chip>
@@ -102,8 +110,8 @@ export function ImageUpload() {
 
 
                   <div className="image-item__btn-wrapper">
-                    <Button className="btn-med" onClick={() => convertToNewFormat(image.dataURL, image.file.name, desiredFormat, 0)}>
-                      Convert to {desiredFormat}
+                    <Button className="btn-med" onClick={() => convertToNewFormat(image.dataURL, image.file.name, desiredFormats[index], index)}>
+                      Convert to {desiredFormats[index]}
                     </Button>
 
                     <Button className="btn-med" onClick={() => onImageRemove(index)}>Remove</Button>

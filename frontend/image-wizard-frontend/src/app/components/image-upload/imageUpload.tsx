@@ -96,7 +96,7 @@ export function ImageUpload() {
 
                 <div key={index} className="image-item">
                   <figure className="image-figure">
-                    <Image src={image.dataURL} alt="your uploaded image" width={180} height={160} />
+                    <Image className="image" src={image.dataURL} alt="your uploaded image" width={280} height={160} />
                     <figcaption>{image.file?.name}</figcaption>
                   </figure>
 

@@ -3,10 +3,12 @@ import Image from "next/image";
 import React, { useState } from "react";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
 import { AspectRatio, Button, Chip, ChipGroup } from '@mantine/core';
+import { IconPhoto, IconDownload, IconTrash } from '@tabler/icons-react';
 import './imageUpload.css'
 
 export function ImageUpload() {
   const [images, setImages] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
   const maxNumber = 69;
 
   const onChange = (
@@ -21,6 +23,7 @@ export function ImageUpload() {
 
   const convertToNewFormat = async (imageData, fileName: string, desiredFormat: string, addUpdateIndex) => {
     try {
+      setLoading(true);
       const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://image-wizard.local/api';
       console.log(apiEndpoint)
 
@@ -54,6 +57,8 @@ export function ImageUpload() {
       });
     } catch (error) {
       console.error('Error converting image:', error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -93,12 +98,12 @@ export function ImageUpload() {
             {imageList.map((image, index) => (
               <>
                 <div className="format-select-btn-container">
-                  <Chip.Group multiple={false} value={desiredFormats[index]} onChange={(value) => handleChipChange(value, index)}>
-                    <Chip value='webp'>WEBP</Chip>
-                    <Chip value='png'>PNG</Chip>
-                    <Chip value='jpeg'>JPEG</Chip>
-                    <Chip value='gif'>GIF</Chip>
-                    <Chip value='bmp'>BMP</Chip>
+                  <Chip.Group defaultValue="webp" multiple={false} value={desiredFormats[index]} onChange={(value) => handleChipChange(value, index)}>
+                    <Chip radius="0" value='webp'>WEBP</Chip>
+                    <Chip radius="0" value='png'>PNG</Chip>
+                    <Chip radius="0" value='jpeg'>JPEG</Chip>
+                    <Chip radius="0" value='gif'>GIF</Chip>
+                    <Chip radius="0" value='bmp'>BMP</Chip>
                   </Chip.Group>
                 </div>
 
@@ -109,19 +114,20 @@ export function ImageUpload() {
                   </figure>
 
 
-                  <div className="image-item__btn-wrapper">
-                    <Button className="btn-med" onClick={() => convertToNewFormat(image.dataURL, image.file.name, desiredFormats[index], index)}>
+
+
+                  <Button.Group className="image-item__btn-wrapper" orientation="vertical">
+                    <Button rightSection={<IconPhoto size={14} />} onClick={() => convertToNewFormat(image.dataURL, image.file.name, desiredFormats[index], index)} loading={loading}>
                       Convert to {desiredFormats[index]}
                     </Button>
-
-                    <Button className="btn-med" onClick={() => onImageRemove(index)}>Remove</Button>
-
-                    <a className="btn-med" href={image.dataURL} download={image.file.name}>
+                    <Button rightSection={<IconTrash size={14} />} onClick={() => onImageRemove(index)} loading={loading}>Remove</Button>
+                    <Button component="a" rightSection={<IconDownload size={14} />} href={image.dataURL} download={image.file.name} loading={loading}>
                       Download
-                    </a>
-                  </div>
+                    </Button>
+                  </Button.Group>
 
                 </div>
+
               </>
             ))}
           </>

@@ -72,13 +72,12 @@ export function ImageUpload() {
           dragProps
         }) => (
           <div className="upload__image-wrapper">
-            <button
-              style={isDragging ? { color: "red" } : undefined}
-              onClick={onImageUpload}
-              {...dragProps}
-            >
-              Click or Drop here
+            <button onClick={onImageUpload}>
+              Click here to upload
             </button>
+            <div className="dropZone" style={isDragging ? { color: "red" } : undefined} {...dragProps}>
+              Drop files here to upload
+            </div>
             &nbsp;
             <button onClick={onImageRemoveAll}>Remove all images</button>
             {imageList.map((image, index) => (

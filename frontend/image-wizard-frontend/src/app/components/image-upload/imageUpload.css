@@ -1,0 +1,63 @@
+.image-upload-wrapper-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-large {
+    width: 66%;
+    height: 60px;
+}
+
+.btn-large>span {
+    font-size: 1.2em;
+}
+
+.btn-med {
+    width: 139px;
+    height: 49px;
+    margin: 5%;
+}
+
+/* .btn-med>label {
+    width: 67px;
+    height: 59px;
+} */
+
+.drop-zone {
+    border: 1px solid black;
+    width: 89%;
+    height: 140px;
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.format-select-btn-container {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    display: flex;
+    flex-direction: row;
+}
+
+.image-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around
+}
+
+.image-figure {
+    display: flex;
+    flex-direction: column;
+    max-width: 50%;
+    margin: 0;
+}
+
+.image-item__btn-wrapper{
+    display: flex;
+    flex-direction: column;
+    max-width: 50%;
+}

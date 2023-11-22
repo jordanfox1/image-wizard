@@ -1,7 +1,9 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
+import { AspectRatio, Button, Chip, ChipGroup } from '@mantine/core';
+import './imageUpload.css'
 
 export function ImageUpload() {
   const [images, setImages] = React.useState([]);
@@ -55,8 +57,10 @@ export function ImageUpload() {
     }
   };
 
+  const [desiredFormat, setDesiredFormat] = useState('webp');
+
   return (
-    <div className="image-upload">
+    <div className="image-upload-wrapper-container">
       <ReactImageUploading
         multiple
         value={images}
@@ -66,36 +70,53 @@ export function ImageUpload() {
         {({
           imageList,
           onImageUpload,
-          onImageRemoveAll,
           onImageRemove,
           isDragging,
           dragProps
         }) => (
-          <div className="upload__image-wrapper">
-            <button onClick={onImageUpload}>
-              Click here to upload
-            </button>
-            <div className="dropZone" style={isDragging ? { color: "red" } : undefined} {...dragProps}>
-              Drop files here to upload
+          <>
+            <div className="drop-zone" style={isDragging ? { color: "red" } : undefined} {...dragProps}>
+              <Button className="btn-large" onClick={onImageUpload} >
+                Select Files
+              </Button>
+              Click or drop files here
             </div>
-            &nbsp;
-            <button onClick={onImageRemoveAll}>Remove all images</button>
+
             {imageList.map((image, index) => (
-              <div key={index} className="image-item">
-                <Image src={image.dataURL} alt="" width={100} height={100} />
-                <span>{image.file?.name}</span>
-                <div className="image-item__btn-wrapper">
-                  <button onClick={() => convertToNewFormat(image.dataURL, image.file.name, 'png', 0)}>
-                    Convert to new format
-                  </button>
-                  <button onClick={() => onImageRemove(index)}>Remove</button>
-                  <a href={image.dataURL} download={image.file.name}>
-                    Download
-                  </a>
+              <>
+                <div className="format-select-btn-container">
+                  <Chip.Group multiple={false} value={desiredFormat} onChange={setDesiredFormat}>
+                    <Chip value='webp'>WEBP</Chip>
+                    <Chip value='png'>PNG</Chip>
+                    <Chip value='jpeg'>JPEG</Chip>
+                    <Chip value='gif'>GIF</Chip>
+                    <Chip value='bmp'>BMP</Chip>
+                  </Chip.Group>
                 </div>
-              </div>
+
+                <div key={index} className="image-item">
+                  <figure className="image-figure">
+                    <Image src={image.dataURL} alt="your uploaded image" width={180} height={160} />
+                    <figcaption>{image.file?.name}</figcaption>
+                  </figure>
+
+
+                  <div className="image-item__btn-wrapper">
+                    <Button className="btn-med" onClick={() => convertToNewFormat(image.dataURL, image.file.name, desiredFormat, 0)}>
+                      Convert to {desiredFormat}
+                    </Button>
+
+                    <Button className="btn-med" onClick={() => onImageRemove(index)}>Remove</Button>
+
+                    <a className="btn-med" href={image.dataURL} download={image.file.name}>
+                      Download
+                    </a>
+                  </div>
+
+                </div>
+              </>
             ))}
-          </div>
+          </>
         )}
       </ReactImageUploading>
     </div>

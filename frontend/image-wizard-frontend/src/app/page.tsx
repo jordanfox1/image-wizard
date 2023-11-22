@@ -1,10 +1,13 @@
 import { ImageUpload } from './components/image-upload/imageUpload'
+import Image from 'next/image';
+import { TopNav } from './components/top-nav/topNav';
+import PageTitle from './components/page-title/pageTitle';
 export default function Home() {
 
   return (
     <main>
-      <h1>Welcome to the image wizard</h1>
-      <h2>reformat your images below</h2>
+      <TopNav />
+      <PageTitle />
       <ImageUpload />
     </main>
   );

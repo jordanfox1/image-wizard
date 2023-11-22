@@ -16,6 +16,7 @@ export function ImageUpload() {
     setImages(imageList as never[]);
   };
 
+
   const convertToNewFormat = async (imageData, fileName: string, desiredFormat: string, addUpdateIndex) => {
     try {
       const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://image-wizard.local/api';
@@ -39,21 +40,20 @@ export function ImageUpload() {
 
       // Access the data URL directly from the response
       const dataURL = responseData.dataURL;
-      const newFileName =  responseData.fileName
+      const newFileName = responseData.fileName
 
-      
+
       setImages(prevImages => {
         const updatedImages = [...prevImages];
-        const newFile = new File([updatedImages[addUpdateIndex].file], newFileName); 
+        const newFile = new File([updatedImages[addUpdateIndex].file], newFileName);
         updatedImages[addUpdateIndex].dataURL = dataURL;
-        updatedImages[addUpdateIndex].file = newFile; 
+        updatedImages[addUpdateIndex].file = newFile;
         return updatedImages;
       });
     } catch (error) {
       console.error('Error converting image:', error.message);
     }
   };
-
 
   return (
     <div className="image-upload">
@@ -67,7 +67,6 @@ export function ImageUpload() {
           imageList,
           onImageUpload,
           onImageRemoveAll,
-          onImageUpdate,
           onImageRemove,
           isDragging,
           dragProps
@@ -91,7 +90,9 @@ export function ImageUpload() {
                     Convert to new format
                   </button>
                   <button onClick={() => onImageRemove(index)}>Remove</button>
-                  <button onClick={() => onImageRemove(index)}>Download</button>
+                  <a href={image.dataURL} download={image.file.name}>
+                    Download
+                  </a>
                 </div>
               </div>
             ))}

@@ -14,6 +14,9 @@ dependencies:
   '@mantine/next':
     specifier: ^6.0.21
     version: 6.0.21(@emotion/react@11.11.1)(@emotion/server@11.11.0)(next@14.0.2)(react-dom@18.2.0)(react@18.2.0)
+  '@tabler/icons-react':
+    specifier: ^2.42.0
+    version: 2.42.0(react@18.2.0)
   next:
     specifier: 14.0.2
     version: 14.0.2(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0)
@@ -1066,6 +1069,20 @@ packages:
     resolution: {integrity: sha512-E4KcWTpoLHqwPHLxidpOqQbcrZVgi0rsmmZXUle1jXmJfuIf/UWpczUJ7MZZ5tlxytgJXyp0w4PGkkeLiuIdZw==}
     dependencies:
       tslib: 2.6.2
+    dev: false
+
+  /@tabler/icons-react@2.42.0(react@18.2.0):
+    resolution: {integrity: sha512-2APr++u24P2mx9vJymJQJORRpu2Qej0rPrtAvgXu8YomHjLXVP+O1VtToSGyoSPH1ysA569XbxrwzOau9Ne12A==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tabler/icons': 2.42.0
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
+  /@tabler/icons@2.42.0:
+    resolution: {integrity: sha512-ynV4iaC1c1mUhuAr9HRaoq8KrWYmZ0bJEpOh7qTBE+OfdDsdvQUe+0S7FW+DHkJ4RuxQMdO8djrZK7HrUw9YMA==}
     dev: false
 
   /@testing-library/dom@9.3.3:

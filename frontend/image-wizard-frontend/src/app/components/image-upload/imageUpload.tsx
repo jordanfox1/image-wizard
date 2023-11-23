@@ -5,12 +5,14 @@ import ReactImageUploading, { ImageListType } from "react-images-uploading";
 import { Button, Chip, Text } from '@mantine/core';
 import { IconPhoto, IconDownload, IconTrash } from '@tabler/icons-react';
 import './imageUpload.css'
+import { useViewportWidth } from "../../hooks/useViewportWidth";
 
 export function ImageUpload() {
   const [images, setImages] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [errors, setErrors] = React.useState({});
   const maxNumber = 69;
+  const vw = useViewportWidth();
 
   const onChange = (
     imageList: ImageListType,
@@ -85,6 +87,7 @@ export function ImageUpload() {
   };
 
   return (
+
     <div className="image-upload-wrapper-container">
       <ReactImageUploading
         multiple
@@ -111,17 +114,17 @@ export function ImageUpload() {
               <>
                 <div className="format-select-btn-container">
                   <Chip.Group defaultValue="webp" multiple={false} value={desiredFormats[index]} onChange={(value) => handleChipChange(value, index)}>
-                    <Chip radius="0" value='webp'>WEBP</Chip>
-                    <Chip radius="0" value='png'>PNG</Chip>
-                    <Chip radius="0" value='jpeg'>JPEG</Chip>
-                    <Chip radius="0" value='gif'>GIF</Chip>
-                    <Chip radius="0" value='bmp'>BMP</Chip>
+                    <Chip size={vw > 1023 ? 'xl' : 'sm'} className="chip" variant="outline" radius="0" value='webp'>WEBP</Chip>
+                    <Chip size={vw > 1023 ? 'xl' : 'sm'} className="chip" variant="outline" radius="0" value='png'>PNG</Chip>
+                    <Chip size={vw > 1023 ? 'xl' : 'sm'} className="chip" variant="outline" radius="0" value='jpeg'>JPEG</Chip>
+                    <Chip size={vw > 1023 ? 'xl' : 'sm'} className="chip" variant="outline" radius="0" value='gif'>GIF</Chip>
+                    <Chip size={vw > 1023 ? 'xl' : 'sm'} className="chip" variant="outline" radius="0" value='bmp'>BMP</Chip>
                   </Chip.Group>
                 </div>
 
                 <div key={index} className="image-item">
                   <figure className="image-figure">
-                    <Image className="image" src={image.dataURL} alt="your uploaded image" width={280} height={160} />
+                    <Image className="image" src={image.dataURL} alt="your uploaded image" width={280} height={160} layout="responsive" />
                     <figcaption>
                       <Text size="md">{image.file?.name} </Text>
                     </figcaption>

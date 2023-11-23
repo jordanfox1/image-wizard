@@ -15,9 +15,9 @@
 }
 
 .drop-zone {
-    border: 1px solid black;
+    border: 3px dotted black;
     width: 89%;
-    height: 140px;
+    min-height: 200px;
     display: flex;
     align-content: center;
     flex-wrap: wrap;
@@ -64,6 +64,10 @@
     border-radius: 0%;
 }
 
-.mantine-Chip-root {
-    border-radius: 0%;
+
+@media screen and (min-width: 1023px) {
+
+
+
+
 }

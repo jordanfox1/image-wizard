@@ -105,7 +105,7 @@ export function ImageUpload() {
               <Button size={vw > 1023 ? 'xl' : 'sm'} rightSection={<IconUpload size={14} />} className="btn-large" onClick={onImageUpload} >
                 Select Files
               </Button>
-              Click or drop files here
+              <Text size="md" c="#3f51b5">Click or drop files here</Text>
             </div>
 
             {imageList.map((image, index) => (

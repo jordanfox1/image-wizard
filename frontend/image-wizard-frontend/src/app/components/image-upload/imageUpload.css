@@ -15,7 +15,7 @@
 }
 
 .drop-zone {
-    border: 3px dotted black;
+    border: 3px dotted #3f51b5;
     width: 89%;
     min-height: 200px;
     display: flex;
@@ -62,7 +62,7 @@
 }
 
 .mantine-Button-root {
-    border-radius: 0%;
+    border-radius: 5px;
 }
 
 .sticky {
@@ -88,5 +88,10 @@
 
     .image-item {
         width: 928px;
+    }
+
+    .btn-med {
+        height: 94px;
+        width: 385px;
     }
 }

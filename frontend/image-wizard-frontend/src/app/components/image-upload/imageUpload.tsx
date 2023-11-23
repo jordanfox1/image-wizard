@@ -11,6 +11,8 @@ export function ImageUpload() {
   const [images, setImages] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [errors, setErrors] = React.useState({});
+  const [desiredFormats, setDesiredFormats] = useState(['webp']);
+
   const maxNumber = 69;
   const vw = useViewportWidth();
 
@@ -27,7 +29,6 @@ export function ImageUpload() {
     });
     setImages(imageList as never[]);
   };
-
 
   const convertToNewFormat = async (imageData, fileName: string, desiredFormat: string, addUpdateIndex) => {
     try {
@@ -76,8 +77,6 @@ export function ImageUpload() {
     }
   };
 
-  const [desiredFormats, setDesiredFormats] = useState(['webp']);
-
   const handleChipChange = (value, index) => {
     setDesiredFormats((prevFormats) => {
       const updatedFormats = [...prevFormats];
@@ -87,7 +86,6 @@ export function ImageUpload() {
   };
 
   return (
-
     <div className="image-upload-wrapper-container">
       <ReactImageUploading
         multiple
@@ -104,7 +102,7 @@ export function ImageUpload() {
         }) => (
           <>
             <div className="drop-zone sticky" style={isDragging ? { color: "red" } : undefined} {...dragProps}>
-              <Button rightSection={<IconUpload size={14} />} className="btn-large" onClick={onImageUpload} >
+              <Button size={vw > 1023 ? 'xl' : 'sm'} rightSection={<IconUpload size={14} />} className="btn-large" onClick={onImageUpload} >
                 Select Files
               </Button>
               Click or drop files here
@@ -114,11 +112,11 @@ export function ImageUpload() {
               <>
                 <div className="format-select-btn-container">
                   <Chip.Group defaultValue="webp" multiple={false} value={desiredFormats[index]} onChange={(value) => handleChipChange(value, index)}>
-                    <Chip  size={vw > 1023 ? 'xl' : 'sm'} className="chip" variant="outline" radius="0" value='webp'>WEBP</Chip>
-                    <Chip size={vw > 1023 ? 'xl' : 'sm'} className="chip" variant="outline" radius="0" value='png'>PNG</Chip>
-                    <Chip size={vw > 1023 ? 'xl' : 'sm'} className="chip" variant="outline" radius="0" value='jpeg'>JPEG</Chip>
-                    <Chip size={vw > 1023 ? 'xl' : 'sm'} className="chip" variant="outline" radius="0" value='gif'>GIF</Chip>
-                    <Chip size={vw > 1023 ? 'xl' : 'sm'} className="chip" variant="outline" radius="0" value='bmp'>BMP</Chip>
+                    <Chip radius="xs" size={vw > 1023 ? 'xl' : 'sm'} className="chip" value='webp'>WEBP</Chip>
+                    <Chip radius="xs" size={vw > 1023 ? 'xl' : 'sm'} className="chip" value='png'>PNG</Chip>
+                    <Chip radius="xs" size={vw > 1023 ? 'xl' : 'sm'} className="chip" value='jpeg'>JPEG</Chip>
+                    <Chip radius="xs" size={vw > 1023 ? 'xl' : 'sm'} className="chip" value='gif'>GIF</Chip>
+                    <Chip radius="xs" size={vw > 1023 ? 'xl' : 'sm'} className="chip" value='bmp'>BMP</Chip>
                   </Chip.Group>
                 </div>
 
@@ -137,15 +135,15 @@ export function ImageUpload() {
 
                   </figure>
 
-                  <Button.Group className="image-item__btn-wrapper" orientation="vertical">
-                    <Button size={vw > 1023 ? 'xl' : 'sm'} rightSection={<IconPhoto size={14} />} onClick={() => convertToNewFormat(image.dataURL, image.file.name, desiredFormats[index], index)} loading={loading}>
+                  <div className="image-item__btn-wrapper" >
+                    <Button className="btn-med" size={vw > 1023 ? 'xl' : 'sm'} rightSection={<IconPhoto size={14} />} onClick={() => convertToNewFormat(image.dataURL, image.file.name, desiredFormats[index], index)} loading={loading}>
                       Convert to {desiredFormats[index]}
                     </Button>
-                    <Button size={vw > 1023 ? 'xl' : 'sm'} rightSection={<IconTrash size={14} />} onClick={() => onImageRemove(index)} loading={loading}>Remove</Button>
-                    <Button size={vw > 1023 ? 'xl' : 'sm'} component="a" rightSection={<IconDownload size={14} />} href={image.dataURL} download={image.file.name} loading={loading}>
+                    <Button className="btn-med" size={vw > 1023 ? 'xl' : 'sm'} rightSection={<IconTrash size={14} />} onClick={() => onImageRemove(index)} loading={loading}>Remove</Button>
+                    <Button className="btn-med" size={vw > 1023 ? 'xl' : 'sm'} component="a" rightSection={<IconDownload size={14} />} href={image.dataURL} download={image.file.name} loading={loading}>
                       Download
                     </Button>
-                  </Button.Group>
+                  </div>
                 </div>
               </>
             ))}

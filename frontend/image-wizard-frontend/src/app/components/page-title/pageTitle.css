@@ -1,4 +1,22 @@
 .heading,
 .subheading {
     text-align: center;
+    margin: 0 auto;
+}
+
+.page-title {
+    margin: 3%;
+}
+
+
+@media screen and (min-width: 1023px) {
+
+    .heading{
+        font-size: xxx-large;
+    }
+
+    .subheading {
+        font-size: x-large;
+    }
+
 }

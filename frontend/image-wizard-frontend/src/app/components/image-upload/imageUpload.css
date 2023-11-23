@@ -38,7 +38,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 3%;
+    margin-left: 3%;
+    margin-right: 3%;
 }
 
 .image-figure {
@@ -70,4 +71,22 @@
     z-index: 100;
 }
 
-@media screen and (min-width: 1023px) {}
+@media screen and (min-width: 1023px) {
+    .drop-zone {
+        width: 928px;
+        height: 264px;
+    }
+
+    .btn-large {
+        width: 692px;
+        height: 111px;
+    }
+
+    .format-select-btn-container {
+        width: 928px;
+    }
+
+    .image-item {
+        width: 928px;
+    }
+}

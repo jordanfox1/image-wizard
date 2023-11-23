@@ -2,21 +2,27 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
-import { AspectRatio, Button, Chip, ChipGroup } from '@mantine/core';
+import { Button, Chip, Text } from '@mantine/core';
 import { IconPhoto, IconDownload, IconTrash } from '@tabler/icons-react';
 import './imageUpload.css'
 
 export function ImageUpload() {
   const [images, setImages] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [errors, setErrors] = React.useState({});
   const maxNumber = 69;
 
   const onChange = (
     imageList: ImageListType,
     addUpdateIndex: number[] | undefined
   ) => {
-    // data for submit
-    console.log(imageList, addUpdateIndex);
+    setErrors((prevErrors) => {
+      const updatedErrors = { ...prevErrors };
+      if (addUpdateIndex !== undefined) {
+        delete updatedErrors[addUpdateIndex[0]];
+      }
+      return updatedErrors;
+    });
     setImages(imageList as never[]);
   };
 
@@ -24,8 +30,13 @@ export function ImageUpload() {
   const convertToNewFormat = async (imageData, fileName: string, desiredFormat: string, addUpdateIndex) => {
     try {
       setLoading(true);
+      setErrors((prevErrors) => {
+        const updatedErrors = { ...prevErrors };
+        delete updatedErrors[addUpdateIndex];
+        return updatedErrors;
+      });
+
       const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://image-wizard.local/api';
-      console.log(apiEndpoint)
 
       const formData = new FormData();
       formData.append('image', imageData);
@@ -57,6 +68,7 @@ export function ImageUpload() {
       });
     } catch (error) {
       console.error('Error converting image:', error.message);
+      setErrors((prevErrors) => ({ ...prevErrors, [addUpdateIndex]: 'Error converting image. Please try again.' }));
     } finally {
       setLoading(false);
     }
@@ -110,11 +122,17 @@ export function ImageUpload() {
                 <div key={index} className="image-item">
                   <figure className="image-figure">
                     <Image className="image" src={image.dataURL} alt="your uploaded image" width={280} height={160} />
-                    <figcaption>{image.file?.name}</figcaption>
+                    <figcaption>
+                      <Text size="md">{image.file?.name} </Text>
+                    </figcaption>
+
+                    {errors[index] && (
+                      <Text size="md" c="red">
+                        {errors[index]}
+                      </Text>
+                    )}
+
                   </figure>
-
-
-
 
                   <Button.Group className="image-item__btn-wrapper" orientation="vertical">
                     <Button rightSection={<IconPhoto size={14} />} onClick={() => convertToNewFormat(image.dataURL, image.file.name, desiredFormats[index], index)} loading={loading}>
@@ -125,9 +143,7 @@ export function ImageUpload() {
                       Download
                     </Button>
                   </Button.Group>
-
                 </div>
-
               </>
             ))}
           </>

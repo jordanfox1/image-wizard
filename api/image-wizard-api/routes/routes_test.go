@@ -444,7 +444,7 @@ func TestRootEndpoint(t *testing.T) {
 	}
 	body := string(bodyBytes)
 
-	if body != "Hello, World 👋 - from image wizard api" {
-		t.Errorf("Expected 'Hello, World 👋 - from image wizard api' but got '%s'", body)
+	if body != "Hello, World 👋 - from Img Switch api" {
+		t.Errorf("Expected 'Hello, World 👋 - from Img Switch api' but got '%s'", body)
 	}
 }

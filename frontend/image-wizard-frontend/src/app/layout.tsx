@@ -5,7 +5,7 @@ import '@mantine/core/styles.css';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 
 export const metadata: Metadata = {
-  title: 'Image Wizard',
+  title: 'Img Switch',
   description: 'Free online image conversion tool',
   authors: { name: 'Jordan Fox', url: 'http://jordan-fox-developer.s3-website-ap-southeast-2.amazonaws.com/' },
   icons: { icon: [{ url: '/images/wand.webp', href: '/images/wand.webp' }] },

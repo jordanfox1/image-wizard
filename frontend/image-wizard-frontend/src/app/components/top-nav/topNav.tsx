@@ -7,7 +7,7 @@ export const TopNav = () => {
         <section className="top-nav">
             <div className="logo-container">
                 < IconWand />
-                <span className="top-nav-text">Image Wizard</span>
+                <span className="top-nav-text">Img Switch</span>
             </div>
         </section>
     )

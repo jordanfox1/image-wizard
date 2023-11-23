@@ -14,7 +14,7 @@ func SetupRoutes(app *fiber.App) {
 	api := app.Group("/api")
 
 	api.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World 👋 - from image wizard api")
+		return c.SendString("Hello, World 👋 - from Img Switch api")
 	})
 
 	api.Post("/convert", func(c *fiber.Ctx) error {

@@ -1,4 +1,4 @@
-module github.com/jordanfox1/image-wizard-api/api/image-wizard-api
+module github.com/jordanfox1/img-switch-api/api/img-switch-api
 
 go 1.21.1
 

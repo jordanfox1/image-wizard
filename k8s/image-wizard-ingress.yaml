@@ -1,24 +1,24 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: image-wizard-ingress
+  name: img-switch-ingress
   namespace: default
 spec:
   rules:
-    - host: image-wizard.local
+    - host: img-switch.local
       http:
         paths:
           - pathType: Prefix
             path: "/api"
             backend:
               service:
-                name: image-wizard-api-srvc
+                name: img-switch-api-srvc
                 port:
                   number: 5000
           - pathType: Prefix
             path: "/"
             backend:
               service:
-                name: image-wizard-frontend-srvc
+                name: img-switch-frontend-srvc
                 port:
                   number: 3000

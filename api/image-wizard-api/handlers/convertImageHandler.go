@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/utils"
+	"github.com/jordanfox1/img-switch-api/api/img-switch-api/utils"
 )
 
 func ConvertImage(inputImageDataUrl string, desiredFormat string) ([]byte, error) {

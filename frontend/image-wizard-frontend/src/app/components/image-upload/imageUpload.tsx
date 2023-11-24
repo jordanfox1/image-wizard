@@ -39,7 +39,7 @@ export function ImageUpload() {
         return updatedErrors;
       });
 
-      const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://image-wizard.local/api';
+      const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://img-switch.local/api';
 
       const formData = new FormData();
       formData.append('image', imageData);

@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: image-wizard-api-depl
+  name: img-switch-api-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: image-wizard-api
+      app: img-switch-api
   template:
     metadata:
       labels:
-        app: image-wizard-api
+        app: img-switch-api
     spec:
       containers:
-        - name: image-wizard-api
-          image: jordanfox/image-wizard-api:master
+        - name: img-switch-api
+          image: jordanfox/img-switch-api:master
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
@@ -23,13 +23,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: image-wizard-api-srvc
+  name: img-switch-api-srvc
 spec:
   type: ClusterIP
   ports:
     - port: 5000
       targetPort: 5000
   selector:
-    app: image-wizard-api
+    app: img-switch-api
 
 

@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: image-wizard-frontend-depl
+  name: img-switch-frontend-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: image-wizard-frontend
+      app: img-switch-frontend
   template:
     metadata:
       labels:
-        app: image-wizard-frontend
+        app: img-switch-frontend
     spec:
       containers:
-        - name: image-wizard-frontend
-          image: jordanfox/image-wizard-frontend:master
+        - name: img-switch-frontend
+          image: jordanfox/img-switch-frontend:master
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
@@ -23,11 +23,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: image-wizard-frontend-srvc
+  name: img-switch-frontend-srvc
 spec:
   type: ClusterIP
   selector:
-    app: image-wizard-frontend
+    app: img-switch-frontend
   ports:
     - port: 3000
       targetPort: 3000

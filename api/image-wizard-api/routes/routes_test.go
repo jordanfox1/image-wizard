@@ -15,8 +15,8 @@ import (
 	"testing"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/routes"
-	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/utils"
+	"github.com/jordanfox1/img-switch-api/api/img-switch-api/routes"
+	"github.com/jordanfox1/img-switch-api/api/img-switch-api/utils"
 )
 
 func setupTestApp() *fiber.App {

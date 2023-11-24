@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/routes"
+	"github.com/jordanfox1/img-switch-api/api/img-switch-api/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"

@@ -3,15 +3,15 @@
 
 #K8s Helper commands
 restart-pods:
-	kubectl rollout restart deployment image-wizard-api-depl
-	kubectl rollout restart deployment image-wizard-frontend-depl
+	kubectl rollout restart deployment img-switch-api-depl
+	kubectl rollout restart deployment img-switch-frontend-depl
 
 deploy-pods:
-	kubectl apply -f k8s/image-wizard-api.yaml
-	kubectl apply -f k8s/image-wizard-frontend.yaml
+	kubectl apply -f k8s/img-switch-api.yaml
+	kubectl apply -f k8s/img-switch-frontend.yaml
 
 dev-api:
-	cd api/image-wizard-api && go run main.go
+	cd api/img-switch-api && go run main.go
 
 dev-fe:
-	cd frontend/image-wizard-frontend && pnpm run dev
+	cd frontend/img-switch-frontend && pnpm run dev

@@ -16,7 +16,7 @@ jobs:
           go-version: "1.21.1"
       - name: run tests
         run: |
-          cd ./api/image-wizard-api
+          cd ./api/img-switch-api
           go mod download
           go test -v -cover ./...
 
@@ -30,7 +30,7 @@ jobs:
           node-version: "20.9.0"
       - name: run tests
         run: |
-          cd ./frontend/image-wizard-frontend
+          cd ./frontend/img-switch-frontend
           npm i pnpm -g
           pnpm i
           pnpm run lint
@@ -43,13 +43,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - context: ./api/image-wizard-api
-            dockerfile: ./api/image-wizard-api/dockerfile
-            image: jordanfox/image-wizard-api
+          - context: ./api/img-switch-api
+            dockerfile: ./api/img-switch-api/dockerfile
+            image: jordanfox/img-switch-api
 
-          - context: ./frontend/image-wizard-frontend
-            dockerfile: ./frontend/image-wizard-frontend/dockerfile
-            image: jordanfox/image-wizard-frontend
+          - context: ./frontend/img-switch-frontend
+            dockerfile: ./frontend/img-switch-frontend/dockerfile
+            image: jordanfox/img-switch-frontend
     permissions:
       contents: read
       packages: write

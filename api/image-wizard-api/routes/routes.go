@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/jordanfox1/image-wizard-api/api/image-wizard-api/handlers"
+	"github.com/jordanfox1/img-switch-api/api/img-switch-api/handlers"
 )
 
 func SetupRoutes(app *fiber.App) {

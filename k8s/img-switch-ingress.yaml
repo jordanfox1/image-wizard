@@ -3,10 +3,13 @@ kind: Ingress
 metadata:
   name: img-switch-ingress
   namespace: default
+  annotations:
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internet-facing
 spec:
+  ingressClassName: alb
   rules:
-    - host: img-switch.local
-      http:
+    - http:
         paths:
           - pathType: Prefix
             path: "/api"

@@ -25,7 +25,7 @@ kind: Service
 metadata:
   name: img-switch-frontend-srvc
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: img-switch-frontend
   ports:

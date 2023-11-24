@@ -10,8 +10,6 @@ deploy-pods:
 	kubectl apply -f k8s/img-switch-api.yaml
 	kubectl apply -f k8s/img-switch-frontend.yaml
 
-dev-api:
-	cd api/img-switch-api && go run main.go
-
-dev-fe:
-	cd frontend/img-switch-frontend && pnpm run dev
+dev-deploy-pods:
+	kubectl apply -f k8s/dev/img-switch-api.yaml
+	kubectl apply -f k8s/dev/img-switch-frontend.yaml

@@ -39,7 +39,7 @@ export function ImageUpload() {
         return updatedErrors;
       });
 
-      const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://k8s-default-imgswitc-5008bdce4e-1355478822.ap-southeast-2.elb.amazonaws.com/api';
+      const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || 'https://www.imgswitch.com/api';
 
       const formData = new FormData();
       formData.append('image', imageData);

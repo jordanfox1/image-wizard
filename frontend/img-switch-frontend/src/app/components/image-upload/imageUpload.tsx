@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
-import { Button, Chip, Text } from '@mantine/core';
+import { Button, Chip, Indicator, Text } from '@mantine/core';
 import { IconPhoto, IconDownload, IconUpload, IconTrash } from '@tabler/icons-react';
 import './imageUpload.css'
 import { useViewportWidth } from "../../hooks/useViewportWidth";
@@ -67,6 +67,7 @@ export function ImageUpload() {
         const newFile = new File([updatedImages[addUpdateIndex].file], newFileName);
         updatedImages[addUpdateIndex].dataURL = dataURL;
         updatedImages[addUpdateIndex].file = newFile;
+        updatedImages[addUpdateIndex].converted = true;
         return updatedImages;
       });
     } catch (error) {
@@ -121,8 +122,36 @@ export function ImageUpload() {
                 </div>
 
                 <div key={index} className="image-item">
+
                   <figure className="image-figure">
-                    <Image className="image" src={image.dataURL} alt="your uploaded image" width={280} height={160} layout="responsive" />
+                    {image.converted && (
+                      <Indicator
+                        label={vw > 1023 ? "Done" : ""}
+                        position="top-start"
+                        size={vw > 1023 ? 50 : 20}
+                        color="green"
+                      >
+                        <Image
+                          className="image"
+                          src={image.dataURL}
+                          alt="your uploaded image"
+                          width={280}
+                          height={160}
+                          layout="responsive"
+                        />
+                      </Indicator>
+                    )}
+                    {!image.converted && (
+                      <Image
+                        className="image"
+                        src={image.dataURL}
+                        alt="your uploaded image"
+                        width={280}
+                        height={160}
+                        layout="responsive"
+                      />
+                    )}
+
                     <figcaption>
                       <Text size="md">{image.file?.name} </Text>
                     </figcaption>
@@ -132,7 +161,6 @@ export function ImageUpload() {
                         {errors[index]}
                       </Text>
                     )}
-
                   </figure>
 
                   <div className="image-item__btn-wrapper" >

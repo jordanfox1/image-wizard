@@ -39,10 +39,10 @@ const ImageItem = ({ image, index, errors, onImageRemove, convertToNewFormat, de
                 <figure className="image-figure">
                     {errors[index] ? (
                         <Indicator
-                            label="Error"
+                            label={vw > 1023 ? "Error" : ""}
                             position="top-start"
                             size={vw > 1023 ? 50 : 20}
-                            color="red"
+                            color={loading ? "blue" : "red"}
                         >
                             <Image
                                 className="image"
@@ -58,7 +58,7 @@ const ImageItem = ({ image, index, errors, onImageRemove, convertToNewFormat, de
                             label={vw > 1023 ? "Done" : ""}
                             position="top-start"
                             size={vw > 1023 ? 50 : 20}
-                            color="green"
+                            color={loading ? "blue" : "green"}
                         >
                             <Image
                                 className="image"

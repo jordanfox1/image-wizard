@@ -15,8 +15,8 @@ interface ImageItemProps {
 }
 
 const ImageItem = ({ image, index, errors, onImageRemove, convertToNewFormat, desiredFormats, vw, setDesiredFormats, loading }: ImageItemProps) => {
-    const handleChipChange = (value, index) => {
-        setDesiredFormats((prevFormats) => {
+    const handleChipChange = (value: string, index: number) => {
+        setDesiredFormats((prevFormats: any) => {
             const updatedFormats = [...prevFormats];
             updatedFormats[index] = value;
             return updatedFormats;

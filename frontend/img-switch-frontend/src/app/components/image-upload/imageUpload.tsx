@@ -1,9 +1,6 @@
 "use client";
-import Image from "next/image";
-import React, { HTMLProps, useState } from "react";
+import React, { useState } from "react";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
-import { Button, Chip, Indicator, Text } from '@mantine/core';
-import { IconPhoto, IconDownload, IconUpload, IconTrash } from '@tabler/icons-react';
 import './imageUpload.css'
 import { useViewportWidth } from "../../hooks/useViewportWidth";
 import Dropzone from "./dropzone/dropzone";

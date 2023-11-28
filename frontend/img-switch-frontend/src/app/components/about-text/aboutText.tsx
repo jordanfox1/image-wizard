@@ -14,7 +14,7 @@ export const AboutText = () => {
                     <Link href="https://en.wikipedia.org/wiki/PNG"> PNG</Link>,
                     <Link href="https://en.wikipedia.org/wiki/BMP_file_format">BMP</Link>,
                     <Link href="https://en.wikipedia.org/wiki/GIF"> GIF</Link>.
-
+                    The maximum image size supported is 100MB.
                     To get started, click the button below.
                     To contact the development team for tech support, suggestions or feeback please reach out through the following channels:
                     <a href="mailto:imgswitch.dev@gmail.com?subject = Feedback&body = Message"> Email</a>, <Link href="https://www.linkedin.com/in/jordanfox183">Linkedin</Link>.

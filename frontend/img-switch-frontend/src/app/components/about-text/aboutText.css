@@ -1,0 +1,11 @@
+.mantine-Spoiler-root {
+    display: grid;
+}
+
+.mantine-Spoiler-control {
+    position: relative;
+    top: 0;
+    color: #3f51b5;
+}
+
+.mantine-Spoiler-content {}

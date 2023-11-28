@@ -34,6 +34,13 @@
     width: 100%;
 }
 
+.image-item-parent {
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .image-item {
     display: flex;
     flex-direction: row;
@@ -41,6 +48,7 @@
     margin-left: 3%;
     margin-right: 3%;
 }
+
 
 .image-figure {
     display: flex;
@@ -65,16 +73,20 @@
     border-radius: 5px;
 }
 
-.sticky {
+/* .sticky {
     position: sticky;
     top: 0;
     z-index: 100;
-}
+} */
 
 @media screen and (min-width: 1023px) {
     .drop-zone {
         width: 928px;
         height: 264px;
+    }
+
+    .image-item-parent {
+        width: 928px;
     }
 
     .btn-large {

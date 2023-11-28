@@ -110,7 +110,7 @@ export function ImageUpload() {
             </div>
 
             {imageList.map((image, index) => (
-              <>
+              <div key={index} className="image-item-parent">
                 <div className="format-select-btn-container">
                   <Chip.Group defaultValue="webp" multiple={false} value={desiredFormats[index]} onChange={(value) => handleChipChange(value, index)}>
                     <Chip radius="xs" size={vw > 1023 ? 'xl' : 'sm'} className="chip" value='webp'>WEBP</Chip>
@@ -120,7 +120,6 @@ export function ImageUpload() {
                     <Chip radius="xs" size={vw > 1023 ? 'xl' : 'sm'} className="chip" value='bmp'>BMP</Chip>
                   </Chip.Group>
                 </div>
-
                 <div key={index} className="image-item">
 
                   <figure className="image-figure">
@@ -173,7 +172,7 @@ export function ImageUpload() {
                     </Button>
                   </div>
                 </div>
-              </>
+              </div>
             ))}
           </>
         )}

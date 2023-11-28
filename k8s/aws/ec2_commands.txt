@@ -1,0 +1,21 @@
+-- user data
+sudo yum update -y
+sudo yum install docker -y
+sudo service docker start
+
+sudo usermod -a -G docker ec2-user
+mkdir dev
+cd dev
+--- /user data
+
+# commands to update the containers on ec2 
+sudo docker login -u jordanfox
+enter token at prompt < docker token >
+
+docker stop <containerID>
+docker rm <containerID>
+docker pull jordanfox/<image name>:master
+docker run -d -p 80:<application start port> jordanfox/<image name>:master
+
+# To clean up all unused docker resources
+docker system prune

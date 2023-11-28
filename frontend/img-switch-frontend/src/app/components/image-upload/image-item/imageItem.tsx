@@ -81,8 +81,13 @@ const ImageItem = ({ image, index, errors, onImageRemove, convertToNewFormat, de
                     )}
 
                     <figcaption>
-                        <Text size="md">{image.file?.name} </Text>
+                        <Text color="#3f51b5" size="md">{image.file?.name} </Text>
                     </figcaption>
+
+                    {errors[index] && <figcaption>
+                        <Text color="red" size="md">{errors[index]} </Text>
+                    </figcaption>}
+
                 </figure>
 
                 <div className="image-item__btn-wrapper" >

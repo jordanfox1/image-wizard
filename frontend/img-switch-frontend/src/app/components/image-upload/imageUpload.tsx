@@ -59,7 +59,11 @@ export function ImageUpload() {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to convert image");
+        if (response.status == 400) {
+          throw new Error("Invalid request - Input and output formats can not be the same - supported formats are WEBP, JPEG, GIF and BMP.");
+        }
+
+        throw new Error("Something went wrong, please check your file size and formats and try again later.");
       }
 
       const responseData = await response.json();
@@ -80,11 +84,16 @@ export function ImageUpload() {
         return updatedImages;
       });
     } catch (error) {
-      console.error("Error converting image:", error.message);
+
+      console.error(error.message);
+      if (error.message == "Failed to fetch") {
+        error.message = "Something went wrong, please check your file size and formats and try again later."
+      }
       setErrors((prevErrors) => ({
         ...prevErrors,
-        [addUpdateIndex]: "Error converting image. Please try again.",
+        [addUpdateIndex]: error.message,
       }));
+
     } finally {
       setLoading(false);
     }

@@ -25,7 +25,19 @@ func SetupRoutes(app *fiber.App) {
 
 		convertedImage, err := handlers.ConvertImage(inputImageDataURL, desiredFormat)
 		if err != nil {
-			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+			if strings.Contains(err.Error(), "input and output formats cannot be the same") {
+				return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+					"status":  400,
+					"message": "Bad Request: input and output formats cannot be the same",
+					"error":   err.Error(),
+				})
+			}
+
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"status":  500,
+				"message": "Failed to convert image",
+				"error":   err.Error(),
+			})
 		}
 
 		dataURL := fmt.Sprintf("data:image/%s;base64,%s", desiredFormat, base64.StdEncoding.EncodeToString(convertedImage))

@@ -20,7 +20,7 @@ FROM common-build-stage as production-build-stage
 # TODO: figure out how to disable CGO
 ENV CGO_ENABLED=1
 
-RUN go build -o ./server -a -ldflags '-linkmode external -extldflags "-static"' ./main.go
+RUN go build -o ./server -a -ldflags '-linkmode external -extldflags' ./main.go
 
 ##
 ## STEP 3 - PRODUCTION CONTAINER PACKAGE

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"time"
 
 	"github.com/gofiber/fiber/v2/middleware/limiter"
@@ -24,8 +25,15 @@ func main() {
 
 	app.Use(cors.New())
 	app.Use(logger.New())
-
 	routes.SetupRoutes(app)
 
-	app.Listen(":5000")
+	var port string
+
+	if envPort := os.Getenv("PORT"); envPort != "" {
+		port = ":" + envPort
+	} else {
+		port = ":5000"
+	}
+
+	app.Listen(port)
 }

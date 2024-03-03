@@ -44,7 +44,7 @@ export function ImageUpload() {
       });
 
       const apiEndpoint =
-        process.env.NEXT_PUBLIC_API_ENDPOINT || "https://www.imgswitch.com/api";
+        process.env.NEXT_PUBLIC_API_ENDPOINT || "https://img-switch-api-production.up.railway.app/api";
 
       const formData = new FormData();
       formData.append("image", imageData);
